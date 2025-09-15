@@ -40,6 +40,8 @@ import (
 // DefaultDataDir is the default directory for storing local data.
 const DefaultDataDir = ".terraform"
 
+const DefaultProviderRegistry = "registry.terraform.io"
+
 // DefaultPluginVendorDir is the location in the config directory to look for
 // user-added plugin binaries. Terraform only reads from this path if it
 // exists, it is never created by terraform.
@@ -271,14 +273,18 @@ func getProviderFileName(providerName string) (string, error) {
 }
 
 func getProviderFileNameV13andV14(prefix, providerName string) (string, error) {
+	providerRegistry := os.Getenv("PROVIDER_REGISTRY")
+	if len(providerRegistry) == 0 {
+		providerRegistry = DefaultProviderRegistry
+	}
 	// Read terraform v14 file path
 	registryDir := prefix + string(os.PathSeparator) + "providers" + string(os.PathSeparator) +
-		"registry.terraform.io"
+		providerRegistry
 	providerDirs, err := os.ReadDir(registryDir)
 	if err != nil {
 		// Read terraform v13 file path
 		registryDir = prefix + string(os.PathSeparator) + "plugins" + string(os.PathSeparator) +
-			"registry.terraform.io"
+			providerRegistry
 		providerDirs, err = os.ReadDir(registryDir)
 		if err != nil {
 			return "", err
