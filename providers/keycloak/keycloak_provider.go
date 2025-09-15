@@ -28,6 +28,8 @@ type KeycloakProvider struct { //nolint
 	basePath              string
 	clientID              string
 	clientSecret          string
+	username              string
+	password              string
 	realm                 string
 	clientTimeout         int
 	caCert                string
@@ -48,12 +50,14 @@ func (p *KeycloakProvider) Init(args []string) error {
 	p.basePath = args[1]
 	p.clientID = args[2]
 	p.clientSecret = args[3]
-	p.realm = args[4]
-	p.clientTimeout, _ = strconv.Atoi(args[5])
-	p.caCert = getArg(args[6])
-	p.tlsInsecureSkipVerify, _ = strconv.ParseBool(args[7])
-	p.redHatSSO, _ = strconv.ParseBool(args[8])
-	p.target = getArg(args[9])
+	p.username = args[4]
+	p.password = args[5]
+	p.realm = args[6]
+	p.clientTimeout, _ = strconv.Atoi(args[7])
+	p.caCert = getArg(args[8])
+	p.tlsInsecureSkipVerify, _ = strconv.ParseBool(args[9])
+	p.redHatSSO, _ = strconv.ParseBool(args[10])
+	p.target = getArg(args[11])
 	return nil
 }
 
@@ -71,6 +75,8 @@ func (p *KeycloakProvider) GetConfig() cty.Value {
 		"base_path":                cty.StringVal(p.basePath),
 		"client_id":                cty.StringVal(p.clientID),
 		"client_secret":            cty.StringVal(p.clientSecret),
+		"username":                 cty.StringVal(p.username),
+		"password":                 cty.StringVal(p.password),
 		"realm":                    cty.StringVal(p.realm),
 		"client_timeout":           cty.NumberIntVal(int64(p.clientTimeout)),
 		"root_ca_certificate":      cty.StringVal(p.caCert),
@@ -97,6 +103,8 @@ func (p *KeycloakProvider) InitService(serviceName string, verbose bool) error {
 		"base_path":                p.basePath,
 		"client_id":                p.clientID,
 		"client_secret":            p.clientSecret,
+		"username":                 p.username,
+		"password":                 p.password,
 		"realm":                    p.realm,
 		"client_timeout":           p.clientTimeout,
 		"root_ca_certificate":      p.caCert,
