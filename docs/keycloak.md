@@ -7,6 +7,8 @@ Example:
  export KEYCLOAK_BASE_PATH=/auth # Only users of the legacy Wildfly distribution will need to set this.
  export KEYCLOAK_CLIENT_ID=[KEYCLOAK_CLIENT_ID]
  export KEYCLOAK_CLIENT_SECRET=[KEYCLOAK_CLIENT_SECRET]
+ export KEYCLOAK_USERNAME=[ADMIN_USERNAME]
+ export KEYCLOAK_PASSWORD=[ADMIN_PASSWORD]
  export RED_HAT_SSO=1 # Only users of the RH-SSO distribution will need to set this.
 
  terraformer import keycloak --resources=realms
